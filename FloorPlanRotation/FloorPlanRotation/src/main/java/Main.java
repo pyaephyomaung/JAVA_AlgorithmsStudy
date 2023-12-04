@@ -1,119 +1,120 @@
 public class Main{
 
-    private static String[][] originalFloor ;
-    private static int floorSize = 5;
-    private static int rotateStartRow = 2;
-    private static int getRotateStartCol = 2;
+    static String[][] originalFloor ;
+    static int originalSize = 6;
 
-    private static int rotateSize = 3;
+    static int changeX = 2;
+    static int changeY = 2;
 
-    private static int rotateDegree = 90;
+    static int changeWidth = 4;
+
+    static int rotateTime = 1;
+
     public static void main(String[] args) {
-        rotateFloor(rotateDegree);
+        roateFloor();
     }
 
-    private static void rotateFloor(int degree){
+    private static void roateFloor(){
 
         originalFloor = new String[][]{
-                {"0","0","0","0","0"},
-                {"0","1","2","3","0"},
-                {"0","4","5","6","0"},
-                {"0","7","8","9","0"},
-                {"0","0","0","0","0"},
+                {"0","0","0","0","0","0"},
+                {"0","a","b","c","d","0"},
+                {"0","e","f","g","h","0"},
+                {"0","i","j","k","l","0"},
+                {"0","m","n","o","p","0"},
+                {"0","0","0","0","0","0"}
         };
 
-        System.out.println("Original Floor Plan");
-        for(int i = 0;i<floorSize;i++){
-            for(int j =0;j<floorSize;j++){
-                System.out.print(originalFloor[i][j]+" ");
-            }
-            System.out.println();
-        }
-        System.out.println();
+        String[][] tmpFloor = new String[changeWidth][changeWidth];
 
-        int rotateTimes = degree/90;
+        //create tmpFloor
 
-        for(int i=0;i<rotateTimes;i++){
-            singleRotation();
-        }
+        for(int i=0;i<changeWidth;i++){
+            for(int j=0;j<changeWidth;j++){
 
-    }
+                tmpFloor[i][j] = originalFloor[i + (changeX - 1)][j + (changeY -1 )];
 
-    private static void singleRotation(){
-
-        System.out.println("Rotation started!!");
-
-        String[][] changedPortion = new String[rotateSize][rotateSize];
-
-        for(int i = 0;i<rotateSize;i++){
-            for(int j =0;j<rotateSize;j++){
-                changedPortion[i][j] = originalFloor[i + (rotateStartRow - 1)][j + (getRotateStartCol -1)];
             }
         }
 
-        for(int i = 0;i<rotateSize;i++){
-            for(int j =0;j<rotateSize;j++){
-                System.out.print(changedPortion[i][j]+" ");
+        //display tmpFllor
+
+        for(int i=0;i<changeWidth;i++){
+            for(int j=0;j<changeWidth;j++){
+
+                System.out.print(tmpFloor[i][j] + " ");
+
             }
             System.out.println();
         }
 
+        //loop tmp Floor and update Original Floor
 
-        for(int i = 0;i<rotateSize;i++){
-            for(int j =0;j<rotateSize;j++){
-                if (i==0){
-                    rotateTopRow(changedPortion[i][j],j);
-                }else if(i== (rotateSize-1)){
-                    rotateBottomRow(changedPortion[i][j],j);
-                }else if(j==0){
-                    rotateLeftColumn(changedPortion[i][j],i);
-                }else if(j== (rotateSize - 1)){
-                    rotateRightColumn(changedPortion[i][j],i);
+        for(int i=0;i<changeWidth;i++){
+            for(int j=0;j<changeWidth;j++){
+
+                //Top
+                if(i == 0){
+                    rotateTop(tmpFloor[i][j],j);
+                }else if(i == (changeWidth - 1)){ // Bottom
+                    rotateBottom(tmpFloor[i][j],j);
+                }else if(j == 0){ // Left
+                    rotateLeft(tmpFloor[i][j],i);
+                }else if(j == (changeWidth - 1)){ // right
+                    rotateRight(tmpFloor[i][j],i);
                 }
+
             }
+
         }
 
-        System.out.println("Rotation End!!");
 
-        for(int i = 0;i<floorSize;i++){
-            for(int j =0;j<floorSize;j++){
-                System.out.print(originalFloor[i][j]+" ");
+        //display originalFloor
+
+        for(int i=0;i<originalSize;i++){
+            for(int j=0;j<originalSize;j++){
+
+                System.out.print(originalFloor[i][j] + " ");
+
             }
             System.out.println();
         }
 
-        System.out.println();
-
     }
 
-    private static void rotateTopRow(String floorContent,int changeCol){
-        int newRow = (rotateStartRow -1) + changeCol;
-        int newColumn = (getRotateStartCol - 1) + (rotateSize - 1);
+    private static void rotateTop(String data , int y ){
+        int newX , newY;
 
-        originalFloor[newRow][newColumn] = floorContent;
+        newX = y + (changeX - 1);
+        newY = (changeWidth - 1) + (changeY - 1);
+
+        originalFloor[newX][newY] = data;
     }
 
-    private static void rotateBottomRow(String floorContent,int changeCol){
-        int newRow = (rotateStartRow -1) + changeCol;
-        int newColumn = (getRotateStartCol - 1) ;
+    private static void rotateBottom(String data , int y ){
+        int newX , newY;
 
-        originalFloor[newRow][newColumn] = floorContent;
+        newX = y + (changeX - 1);
+        newY = (changeY - 1);
 
+        originalFloor[newX][newY] = data;
     }
 
-    private static void rotateLeftColumn(String floorContent,int changeRow){
-        int newRow = (rotateStartRow -1) ;
-        int newColumn = (getRotateStartCol - 1) + changeRow ;
+    private static void rotateLeft(String data , int x ){
+        int newX , newY;
 
-        originalFloor[newRow][newColumn] = floorContent;
+        newX =  (changeX - 1);
+        newY = ( (changeWidth -1) -x)+(changeY - 1);
 
+        originalFloor[newX][newY] = data;
     }
 
-    private static void rotateRightColumn(String floorContent,int changeRow){
-        int newRow = (rotateStartRow -1) + (rotateSize - 1) ;
-        int newColumn = (getRotateStartCol - 1) + changeRow ;
+    private static void rotateRight(String data , int x ){
+        int newX , newY;
 
-        originalFloor[newRow][newColumn] = floorContent;
+        newX =  (changeWidth - 1)+(changeX - 1);
+        newY = ( (changeWidth -1) -x)+(changeY - 1);
 
+        originalFloor[newX][newY] = data;
     }
 }
