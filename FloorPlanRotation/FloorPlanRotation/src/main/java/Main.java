@@ -1,21 +1,20 @@
 public class Main{
 
-    static String[][] originalFloor ;
-    static int originalSize = 6;
+    private static String[][] originalFloor;
+    private static int originalSize = 6;
 
-    static int changeX = 2;
-    static int changeY = 2;
+    private static int orientStartX = 2;
+    private static int orientStartY = 2;
+    private static int orientSize = 4;
 
-    static int changeWidth = 4;
-
-    static int rotateTime = 1;
-
+    private static int orientTime = 1;
     public static void main(String[] args) {
-        roateFloor();
+        rotateFloor();
     }
 
-    private static void roateFloor(){
+    private static void rotateFloor(){
 
+        //set Original Floor Data
         originalFloor = new String[][]{
                 {"0","0","0","0","0","0"},
                 {"0","a","b","c","d","0"},
@@ -23,98 +22,116 @@ public class Main{
                 {"0","i","j","k","l","0"},
                 {"0","m","n","o","p","0"},
                 {"0","0","0","0","0","0"}
+
         };
 
-        String[][] tmpFloor = new String[changeWidth][changeWidth];
-
-        //create tmpFloor
-
-        for(int i=0;i<changeWidth;i++){
-            for(int j=0;j<changeWidth;j++){
-
-                tmpFloor[i][j] = originalFloor[i + (changeX - 1)][j + (changeY -1 )];
-
-            }
-        }
-
-        //display tmpFllor
-
-        for(int i=0;i<changeWidth;i++){
-            for(int j=0;j<changeWidth;j++){
-
-                System.out.print(tmpFloor[i][j] + " ");
-
-            }
-            System.out.println();
-        }
-
-        //loop tmp Floor and update Original Floor
-
-        for(int i=0;i<changeWidth;i++){
-            for(int j=0;j<changeWidth;j++){
-
-                //Top
-                if(i == 0){
-                    rotateTop(tmpFloor[i][j],j);
-                }else if(i == (changeWidth - 1)){ // Bottom
-                    rotateBottom(tmpFloor[i][j],j);
-                }else if(j == 0){ // Left
-                    rotateLeft(tmpFloor[i][j],i);
-                }else if(j == (changeWidth - 1)){ // right
-                    rotateRight(tmpFloor[i][j],i);
-                }
-
-            }
-
-        }
-
-
-        //display originalFloor
-
-        for(int i=0;i<originalSize;i++){
+        //Display Original Floor Before Rotation
+        for(int i =0;i<originalSize;i++){
             for(int j=0;j<originalSize;j++){
-
-                System.out.print(originalFloor[i][j] + " ");
-
+                System.out.print(originalFloor[i][j]+" ");
             }
             System.out.println();
         }
+        System.out.println();
 
+        for(int i =0;i<orientTime;i++){
+            rotateOneTime();
+        }
+
+        //display Floor Data
+
+        for(int i =0;i<originalSize;i++){
+            for(int j=0;j<originalSize;j++){
+                System.out.print(originalFloor[i][j]+" ");
+            }
+            System.out.println();
+        }
     }
 
-    private static void rotateTop(String data , int y ){
-        int newX , newY;
+    private static void rotateOneTime(){
 
-        newX = y + (changeX - 1);
-        newY = (changeWidth - 1) + (changeY - 1);
+        //set rotatePortionData
+        String[][] rotatePortion = new String[orientSize][orientSize];
+
+        int originalX ,originalY = 0;
+        for(int x=0;x<orientSize;x++){
+            for(int y=0;y<orientSize;y++){
+                originalX = x + (orientStartX - 1);
+                originalY = y + (orientStartY - 1);
+                rotatePortion[x][y] = originalFloor[originalX][originalY];
+            }
+        }
+
+        //display rotatePortion
+        for(int x=0;x<orientSize;x++){
+            for(int y=0;y<orientSize;y++){
+                System.out.print(rotatePortion[x][y]+" ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+
+
+        //loop rotatePortion and update to original Floor
+        String rotateData = "";
+        for(int x=0;x<orientSize;x++){
+            for(int y=0;y<orientSize;y++){
+                rotateData = rotatePortion[x][y];
+                if (x == 0){ // TOP
+                    rotateTop(rotateData , y);
+                }else if (x == (orientSize - 1)){ // BOTTOM
+                    rotateBottom(rotateData , y);
+                }else if (y == 0){ // LEFT
+                    rotateLeft(rotateData , x);
+                }else if (y == (orientSize - 1)){ // RIGHT
+                    rotateRight(rotateData , x);
+                }
+            }
+        }
+
+        //Method Ends Here
+    }
+
+    private static void rotateTop(String data,int y){
+        int newX =(orientStartX -1);
+        int newY = (orientStartY -1);
+
+        newX = newX + y;
+        newY = newY + (orientSize - 1);
 
         originalFloor[newX][newY] = data;
     }
 
-    private static void rotateBottom(String data , int y ){
-        int newX , newY;
+    private static void rotateBottom(String data,int y){
+        int newX =(orientStartX -1);
+        int newY = (orientStartY -1);
 
-        newX = y + (changeX - 1);
-        newY = (changeY - 1);
-
-        originalFloor[newX][newY] = data;
-    }
-
-    private static void rotateLeft(String data , int x ){
-        int newX , newY;
-
-        newX =  (changeX - 1);
-        newY = ( (changeWidth -1) -x)+(changeY - 1);
+        newX = newX + y;
 
         originalFloor[newX][newY] = data;
     }
 
-    private static void rotateRight(String data , int x ){
-        int newX , newY;
+    private static void rotateLeft(String data,int x){
+        int newX =(orientStartX -1);
+        int newY = (orientStartY -1);
 
-        newX =  (changeWidth - 1)+(changeX - 1);
-        newY = ( (changeWidth -1) -x)+(changeY - 1);
+        newY = newY + (  (orientSize - 1) - x);
 
         originalFloor[newX][newY] = data;
+
     }
+
+    private static void rotateRight(String data,int x){
+        int newX =(orientStartX -1);
+        int newY = (orientStartY -1);
+
+        newX = newX + (orientSize - 1);
+        newY = newY + (  (orientSize - 1) - x);
+
+        originalFloor[newX][newY] = data;
+
+    }
+
+
+
 }
