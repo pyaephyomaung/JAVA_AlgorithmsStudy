@@ -9,7 +9,7 @@ public class Main{
             int dist1 = scanner.nextInt();
 
             String enemy2 = scanner.next();
-            int dist2 = scanner.nextInt();
+            int dist2 = scanner.nextInt();//TEST
 
             System.out.println(dist1<dist2?enemy1:enemy2);
         }
