@@ -20,7 +20,7 @@ public class Main {
             }///
 
             for (int i = 0; i < K; i++) {///
-                temp = A[len - 1];////
+                temp = A[len - 1];
                 for (int j = A.length - 1; j > 0; j--) {
                     A[j] = A[j - 1];
                 }
