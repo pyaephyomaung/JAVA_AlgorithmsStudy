@@ -13,13 +13,13 @@ public class Main {
 
         public static int[] Solution(int[] A, int K) {
             int temp = 0;
-            int len = A.length;
+            int len = A.length;///
 
             if (len < 1) {
                 return A;
-            }
+            }///
 
-            for (int i = 0; i < K; i++) {
+            for (int i = 0; i < K; i++) {///
                 temp = A[len - 1];
                 for (int j = A.length - 1; j > 0; j--) {
                     A[j] = A[j - 1];
